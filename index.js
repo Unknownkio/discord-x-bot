@@ -49,7 +49,7 @@ const tweets = response.data?.tweets || [];
   } catch (error) {
     console.error("FULL ERROR:", error.response?.data || error.message);
   }
-
+ }
 
     
     console.error("Tweet check error:", error.response?.data || error.message);
