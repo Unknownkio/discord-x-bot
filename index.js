@@ -14,7 +14,7 @@ const client = new Client({
 
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 const CHANNEL_ID = process.env.CHANNEL_ID;
-const X_BEARER_TOKEN = process.env.X_BEARER_TOKEN;
+const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
 const TWITTER_USER_ID = process.env.TWITTER_USER_ID;
 
 let lastTweetId = null;
@@ -22,29 +22,32 @@ let lastTweetId = null;
 async function checkTweets() {
   try {
     const response = await axios.get(
-      `https://api.twitter.com/2/users/${TWITTER_USER_ID}/tweets`,
+      `https://twitter241.p.rapidapi.com/user-tweets?user=${TWITTER_USER_ID}&count=5`,
       {
         headers: {
-          Authorization: `Bearer ${X_BEARER_TOKEN}`
-        },
-        params: {
-          max_results: 5
+          "X-RapidAPI-Key": RAPIDAPI_KEY,
+          "X-RapidAPI-Host": "twitter241.p.rapidapi.com"
         }
       }
     );
 
-    const tweets = response.data.data;
+    const tweets = response.data?.result?.timeline?.instructions
+      ?.flatMap(i => i.entries || [])
+      ?.map(e => e.content?.itemContent?.tweet_results?.result)
+      ?.filter(Boolean);
 
-    if (!tweets) return;
+    if (!tweets || tweets.length === 0) return;
 
     const newestTweet = tweets[0];
 
-    if (lastTweetId && newestTweet.id === lastTweetId) return;
+    if (lastTweetId && newestTweet.rest_id === lastTweetId) return;
 
-    lastTweetId = newestTweet.id;
+    lastTweetId = newestTweet.rest_id;
+
+    const text = newestTweet.legacy?.full_text;
 
     const channel = await client.channels.fetch(CHANNEL_ID);
-    channel.send(`🐦 New Tweet:\n\n${newestTweet.text}`);
+    await channel.send(`🐦 New Tweet:\n\n${text}`);
 
   } catch (error) {
     console.error("Error fetching tweets:", error.response?.data || error.message);
@@ -53,7 +56,7 @@ async function checkTweets() {
 
 client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}`);
-  setInterval(checkTweets, 60000); // checks every 60 seconds
+  setInterval(checkTweets, 60000);
 });
 
 client.login(DISCORD_TOKEN);
