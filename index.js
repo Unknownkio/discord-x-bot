@@ -21,16 +21,24 @@ let lastTweetId = null;
 
 async function checkTweets() {
   try {
-console.log("Loaded RAPIDAPI_KEY:", JSON.stringify(RAPIDAPI_KEY));
-console.log("Loaded TWITTER_USER_ID:", JSON.stringify(TWITTER_USER_ID));
     const response = await axios.get(
       `https://twitter241.p.rapidapi.com/user-tweets?user=${TWITTER_USER_ID}&count=5`,
       {
         headers: {
-          'X-RapidAPI-Key': RAPIDAPI_KEY,
-          'X-RapidAPI-Host': 'twitter241.p.rapidapi.com'
+          "X-RapidAPI-Key": RAPIDAPI_KEY,
+          "X-RapidAPI-Host": "twitter241.p.rapidapi.com"
         }
       }
+    );
+
+    console.log("API RAW RESPONSE:");
+    console.log(JSON.stringify(response.data, null, 2));
+
+  } catch (error) {
+    console.error("FULL ERROR:", error.response?.data || error.message);
+  }
+}
+
     );
 
     const tweets = response.data?.tweets || [];
