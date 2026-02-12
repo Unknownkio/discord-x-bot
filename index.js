@@ -19,22 +19,27 @@ const TWITTER_USER_ID = process.env.TWITTER_USER_ID;
 
 let lastTweetId = null;
 
-async function checkTweets() {
+ async function checkTweets() {
   try {
     const response = await axios.get(
       `https://twitter241.p.rapidapi.com/user-tweets?user=${TWITTER_USER_ID}&count=5`,
-     
- 
-  );
+      {
+        headers: {
+          "X-RapidAPI-Key": RAPIDAPI_KEY,
+          "X-RapidAPI-Host": "twitter241.p.rapidapi.com"
+        }
+      }
+    );
 
-  // Log the raw response data
-  console.log("Raw API Response:", response.data);
+    console.log("Raw API Response:", response.data);
 
-  // Continue with your existing code here...
+    // Continue with your existing code here...
 
-} catch (error) {
-  console.error("FULL ERROR:", error.response?.data || error.message);
+  } catch (error) {
+    console.error("FULL ERROR:", error.response?.data || error.message);
+  }
 }
+
 
         headers: {
           "X-RapidAPI-Key": RAPIDAPI_KEY,
