@@ -23,7 +23,7 @@ async function checkTweets() {
   try {
     const response = await axios.get(
       `https://twitter241.p.rapidapi.com/user-tweets?user=${TWITTER_USER_ID}&count=5`,
-      { try {
+     
   const response = await axios.get(
     `https://twitter241.p.rapidapi.com/user-tweets?user=${TWITTER_USER_ID}&count=5`,
     {
