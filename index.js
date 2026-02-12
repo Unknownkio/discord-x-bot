@@ -21,6 +21,8 @@ let lastTweetId = null;
 
 async function checkTweets() {
   try {
+console.log("Loaded RAPIDAPI_KEY:", JSON.stringify(RAPIDAPI_KEY));
+console.log("Loaded TWITTER_USER_ID:", JSON.stringify(TWITTER_USER_ID));
     const response = await axios.get(
       `https://twitter241.p.rapidapi.com/user-tweets?user=${TWITTER_USER_ID}&count=5`,
       {
