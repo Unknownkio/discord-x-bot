@@ -33,13 +33,7 @@ async function checkTweets() {
 
     console.log("API RAW RESPONSE:");
     console.log(JSON.stringify(response.data, null, 2));
-
-  } catch (error) {
-    console.error("FULL ERROR:", error.response?.data || error.message);
-  }
-}
-
-    const tweets = response.data?.tweets || [];
+const tweets = response.data?.tweets || [];
 
     if (!tweets.length) return;
 
@@ -52,6 +46,12 @@ async function checkTweets() {
       await channel.send(`🆕 New Tweet:\n${latestTweet.text}`);
     }
 
+  } catch (error) {
+    console.error("FULL ERROR:", error.response?.data || error.message);
+  }
+}
+
+    
   } catch (error) {
     console.error("Tweet check error:", error.response?.data || error.message);
   }
