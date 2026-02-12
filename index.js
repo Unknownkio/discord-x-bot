@@ -38,7 +38,7 @@ async function checkTweets() {
     console.error("FULL ERROR:", error.response?.data || error.message);
   }
 }
-    );
+    )
 
     const tweets = response.data?.tweets || [];
 
