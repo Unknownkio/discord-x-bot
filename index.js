@@ -52,7 +52,7 @@ const tweets = response.data?.tweets || [];
  }
 
     
-    console.error("Tweet check error:", error.response?.data || error.message);
+   
   
 
 
