@@ -25,6 +25,7 @@ client.login(DISCORD_TOKEN);
 
 const CHANNEL_ID = process.env.CHANNEL_ID;
 const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
+ console.log("Key length:", RAPIDAPI_KEY ? RAPIDAPI_KEY.length : "undefined");
 const TWITTER_USER_ID = process.env.TWITTER_USER_ID;
 
 let lastTweetId = null;
