@@ -1,6 +1,6 @@
 import { Client, GatewayIntentBits } from 'discord.js';
 import dotenv from 'dotenv';
-
+import axios from 'axios';
 dotenv.config();
 
 const client = new Client({
@@ -15,6 +15,7 @@ const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
 client.once('clientReady', () => {
   console.log(`✅ Logged in as ${client.user.tag}`);
+setInterval(checkTweets, 60000);
 });
 
 client.login(DISCORD_TOKEN);
