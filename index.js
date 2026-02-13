@@ -15,7 +15,9 @@ const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
 client.once('clientReady', () => {
   console.log(`✅ Logged in as ${client.user.tag}`);
-setInterval(checkTweets, 60000);
+
+  checkTweets(); // run immediately
+  setInterval(checkTweets, 60000); // then every minute
 });
 
 client.login(DISCORD_TOKEN);
@@ -57,5 +59,4 @@ async function checkTweets() {
   }
 }
 
-// Check every 60 seconds
-setInterval(checkTweets, 60000);
+
