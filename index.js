@@ -40,11 +40,12 @@ client.login(DISCORD_TOKEN);
 async function checkTweets() {
   try {
     const response = await axios.get(
-      `https://twitter241.p.rapidapi.com/user-tweets?user=${TWITTER_USER_ID}&count=5`,
+     https://twitter-v2-api.p.rapidapi.com/user-tweets?user_id=${TWITTER_USER_ID}
+,
       {
         headers: {
           "X-RapidAPI-Key": RAPIDAPI_KEY,
-          "X-RapidAPI-Host": "twitter241.p.rapidapi.com"
+          "X-RapidAPI-Host": "twitter-v2-api.p.rapidapi.com",
         }
       }
     );
