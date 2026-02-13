@@ -19,7 +19,7 @@ setInterval(checkTweets, 60000);
 });
 
 client.login(DISCORD_TOKEN);
-import axios from "axios";
+
 
 const CHANNEL_ID = process.env.CHANNEL_ID;
 const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
