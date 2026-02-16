@@ -44,7 +44,7 @@ async function checkTweets() {
 ,
       {
         headers: {
-          "X-RapidAPI-Key":e4e5c54edamsh370182fda1f4879p1164aajsn2415139abece,
+          "X-RapidAPI-Key": RAPIDAPI_KEY,
           "X-RapidAPI-Host": "twitter-v2-api.p.rapidapi.com",
         }
       }
