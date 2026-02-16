@@ -1,6 +1,6 @@
-import { Client, GatewayIntentBits } from 'discord.js';
-import dotenv from 'dotenv';
-import axios from 'axios';
+import { Client, GatewayIntentBits } from "discord.js";
+import dotenv from "dotenv";
+import axios from "axios";
 
 dotenv.config();
 
@@ -8,45 +8,36 @@ const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent
-  ]
+    GatewayIntentBits.MessageContent,
+  ],
 });
 
-// ENV VARIABLES
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 const CHANNEL_ID = process.env.CHANNEL_ID;
-const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY?.trim();
+const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY.trim();
 const TWITTER_USER_ID = process.env.TWITTER_USER_ID;
-
-if (!DISCORD_TOKEN || !CHANNEL_ID || !RAPIDAPI_KEY || !TWITTER_USER_ID) {
-  console.error("❌ Missing environment variables.");
-  process.exit(1);
-}
 
 let lastTweetId = null;
 
-// Bot Ready
-client.once('clientReady', () => {
-  console.log(`✅ Logged in as ${client.user.tag}`);
-  console.log("🔑 RapidAPI Key Length:", RAPIDAPI_KEY.length);
+console.log("🔑 RapidAPI Key Length:", RAPIDAPI_KEY?.length);
 
-  checkTweets();              // Run immediately
-  setInterval(checkTweets, 60000); // Then every 60 seconds
+client.once("clientReady", () => {
+  console.log(`✅ Logged in as ${client.user.tag}`);
+  checkTweets();
+  setInterval(checkTweets, 60000);
 });
 
 client.login(DISCORD_TOKEN);
 
-// MAIN FUNCTION
 async function checkTweets() {
   try {
     const response = await axios.get(
-     `https://twitter-v2-api.p.rapidapi.com/user-tweets?user_id=${TWITTER_USER_ID}`
-,
+      `https://twitter-v2-api.p.rapidapi.com/user-tweets?user_id=${TWITTER_USER_ID}`,
       {
         headers: {
           "X-RapidAPI-Key": RAPIDAPI_KEY,
           "X-RapidAPI-Host": "twitter-v2-api.p.rapidapi.com",
-        }
+        },
       }
     );
 
@@ -56,7 +47,9 @@ async function checkTweets() {
     for (const instruction of instructions) {
       if (instruction.entries) {
         for (const entry of instruction.entries) {
-          const tweet = entry?.content?.itemContent?.tweet_results?.result;
+          const tweet =
+            entry?.content?.itemContent?.tweet_results?.result;
+
           if (tweet?.legacy?.full_text) {
             tweets.push(tweet);
           }
@@ -65,7 +58,7 @@ async function checkTweets() {
     }
 
     if (!tweets.length) {
-      console.log("ℹ️ No tweets found.");
+      console.log("⚠️ No tweets found.");
       return;
     }
 
@@ -77,16 +70,17 @@ async function checkTweets() {
       const channel = await client.channels.fetch(CHANNEL_ID);
 
       await channel.send(
-        `📰 **New Tweet from User:**\n\n${latestTweet.legacy.full_text}\n\nhttps://twitter.com/${latestTweet.core.user_results.result.core.screen_name}/status/${latestTweet.rest_id}`
+        `📰 **New Tweet:**\n\n${latestTweet.legacy.full_text}\n\nhttps://twitter.com/i/web/status/${latestTweet.rest_id}`
       );
 
-      console.log("✅ Posted new tweet:", latestTweet.rest_id);
+      console.log("✅ Tweet posted:", latestTweet.rest_id);
     } else {
       console.log("⏳ No new tweet.");
     }
-
   } catch (error) {
-    console.error("❌ FULL ERROR:");
-    console.error(error.response?.data || error.message);
+    console.error(
+      "❌ FULL ERROR:",
+      error.response?.data || error.message
+    );
   }
 }
